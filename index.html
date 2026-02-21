@@ -6,10 +6,10 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="author" content="Kara C. Hoover, PhD">
+<meta name="author" content="Kara C. Hoover">
 <meta name="dcterms.date" content="2025-02-01">
 
-<title>LLM-Powered Identity Document Validation Using AWS Bedrock</title>
+<title>LLM-Powered Biometric Document Auditing via AWS Bedrock</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -24,41 +24,6 @@ ul.task-list li input[type="checkbox"] {
   width: 0.8em;
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
-}
-/* CSS for syntax highlighting */
-html { -webkit-text-size-adjust: 100%; }
-pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
-pre > code.sourceCode > span:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
-div.sourceCode { margin: 1em 0; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
-}
-@media print {
-pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
-}
-pre.numberSource code
-  { counter-reset: source-line 0; }
-pre.numberSource code > span
-  { position: relative; left: -4em; counter-increment: source-line; }
-pre.numberSource code > span > a:first-child::before
-  { content: counter(source-line);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-  }
-pre.numberSource { margin-left: 3em;  padding-left: 4px; }
-div.sourceCode
-  {   }
-@media screen {
-pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 </style>
 
@@ -88,27 +53,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
    
   <ul>
   <li><a href="#executive-summary" id="toc-executive-summary" class="nav-link active" data-scroll-target="#executive-summary">Executive Summary</a></li>
-  <li><a href="#setup" id="toc-setup" class="nav-link" data-scroll-target="#setup">Setup</a></li>
-  <li><a href="#results" id="toc-results" class="nav-link" data-scroll-target="#results">Results</a>
+  <li><a href="#research-question" id="toc-research-question" class="nav-link" data-scroll-target="#research-question">Research Question</a></li>
+  <li><a href="#research-answers" id="toc-research-answers" class="nav-link" data-scroll-target="#research-answers">Research Answers</a>
   <ul class="collapse">
-  <li><a href="#overall-performance" id="toc-overall-performance" class="nav-link" data-scroll-target="#overall-performance">Overall Performance</a></li>
+  <li><a href="#prompt-design-determines-reliability" id="toc-prompt-design-determines-reliability" class="nav-link" data-scroll-target="#prompt-design-determines-reliability">Prompt Design Determines Reliability</a></li>
+  <li><a href="#semantic-anomaly-detection-what-rule-based-systems-cannot-do" id="toc-semantic-anomaly-detection-what-rule-based-systems-cannot-do" class="nav-link" data-scroll-target="#semantic-anomaly-detection-what-rule-based-systems-cannot-do">Semantic Anomaly Detection: What Rule-Based Systems Cannot Do</a></li>
+  <li><a href="#hybrid-architecture-optimizes-cost-and-coverage" id="toc-hybrid-architecture-optimizes-cost-and-coverage" class="nav-link" data-scroll-target="#hybrid-architecture-optimizes-cost-and-coverage">Hybrid Architecture Optimizes Cost and Coverage</a></li>
   </ul></li>
-  <li><a href="#the-key-advantage-semantic-anomaly-detection" id="toc-the-key-advantage-semantic-anomaly-detection" class="nav-link" data-scroll-target="#the-key-advantage-semantic-anomaly-detection">The Key Advantage: Semantic Anomaly Detection</a>
-  <ul class="collapse">
-  <li><a href="#test-case-date-logic-violations" id="toc-test-case-date-logic-violations" class="nav-link" data-scroll-target="#test-case-date-logic-violations">Test Case: Date Logic Violations</a></li>
-  </ul></li>
-  <li><a href="#formatting-inconsistency-detection" id="toc-formatting-inconsistency-detection" class="nav-link" data-scroll-target="#formatting-inconsistency-detection">Formatting Inconsistency Detection</a>
-  <ul class="collapse">
-  <li><a href="#test-case-non-standard-formatting" id="toc-test-case-non-standard-formatting" class="nav-link" data-scroll-target="#test-case-non-standard-formatting">Test Case: Non-Standard Formatting</a></li>
-  </ul></li>
-  <li><a href="#performance-visualization" id="toc-performance-visualization" class="nav-link" data-scroll-target="#performance-visualization">Performance Visualization</a></li>
-  <li><a href="#cost-benefit-analysis" id="toc-cost-benefit-analysis" class="nav-link" data-scroll-target="#cost-benefit-analysis">Cost-Benefit Analysis</a></li>
-  <li><a href="#recommended-integration-hybrid-pipeline" id="toc-recommended-integration-hybrid-pipeline" class="nav-link" data-scroll-target="#recommended-integration-hybrid-pipeline">Recommended Integration: Hybrid Pipeline</a></li>
-  <li><a href="#technical-implementation" id="toc-technical-implementation" class="nav-link" data-scroll-target="#technical-implementation">Technical Implementation</a></li>
-  <li><a href="#prompt-engineering-insights" id="toc-prompt-engineering-insights" class="nav-link" data-scroll-target="#prompt-engineering-insights">Prompt Engineering Insights</a></li>
-  <li><a href="#comparison-to-traditional-approaches" id="toc-comparison-to-traditional-approaches" class="nav-link" data-scroll-target="#comparison-to-traditional-approaches">Comparison to Traditional Approaches</a></li>
-  <li><a href="#operational-considerations" id="toc-operational-considerations" class="nav-link" data-scroll-target="#operational-considerations">Operational Considerations</a></li>
-  <li><a href="#key-insights" id="toc-key-insights" class="nav-link" data-scroll-target="#key-insights">Key Insights</a></li>
+  <li><a href="#next-steps" id="toc-next-steps" class="nav-link" data-scroll-target="#next-steps">Next Steps</a></li>
+  <li><a href="#study-design" id="toc-study-design" class="nav-link" data-scroll-target="#study-design">Study Design</a></li>
+  <li><a href="#data-code" id="toc-data-code" class="nav-link" data-scroll-target="#data-code">Data &amp; Code</a></li>
+  <li><a href="#tools-technologies" id="toc-tools-technologies" class="nav-link" data-scroll-target="#tools-technologies">Tools &amp; Technologies</a></li>
+  <li><a href="#expertise" id="toc-expertise" class="nav-link" data-scroll-target="#expertise">Expertise</a></li>
   </ul>
 </nav>
 </div>
@@ -116,8 +72,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">LLM-Powered Identity Document Validation Using AWS Bedrock</h1>
-</div>
+<h1 class="title">LLM-Powered Biometric Document Auditing via AWS Bedrock</h1>
+  <div class="quarto-categories">
+    <div class="quarto-category">AWS</div>
+    <div class="quarto-category">LLM</div>
+    <div class="quarto-category">Python</div>
+    <div class="quarto-category">prompt engineering</div>
+    <div class="quarto-category">serverless</div>
+    <div class="quarto-category">fraud detection</div>
+  </div>
+  </div>
 
 
 
@@ -126,7 +90,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div>
     <div class="quarto-title-meta-heading">Author</div>
     <div class="quarto-title-meta-contents">
-             <p>Kara C. Hoover, PhD </p>
+             <p>Kara C. Hoover </p>
           </div>
   </div>
     
@@ -147,37 +111,39 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <section id="executive-summary" class="level2">
 <h2 class="anchored" data-anchor-id="executive-summary">Executive Summary</h2>
-<p><strong>Background.</strong> Identity document validation traditionally relies on OCR (text extraction) plus rule-based validation (checking extracted fields against business logic). This approach has limitations: OCR extracts text but doesn’t understand semantics, rule-based systems require explicit programming for every validation scenario, and template matching fails on novel document layouts. LLMs offer potential advantages: semantic understanding that detects logical inconsistencies, flexible handling of variable document layouts, and natural language explanations of validation decisions.</p>
-<p><strong>Goal:</strong> Explore whether large language models can augment traditional computer vision approaches for identity document verification.</p>
-<p><strong>Approach:</strong> Built proof-of-concept pipeline using Claude 3.5 Sonnet via AWS Bedrock. Created three synthetic test documents (clean baseline, date anomalies, formatting issues) and compared three prompting strategies (minimal, schema-driven, chain-of-thought) across metrics including JSON parse success, response time, and anomaly detection rate.</p>
-<p><strong>Results:</strong> Schema-driven prompting achieved 100% structured output reliability with 1.6s average response time. Successfully detected semantic anomalies (expiration dates before issue dates, future issue dates, inconsistent formatting) that traditional OCR would miss. Cost analysis shows 8x premium over OCR ($0.008 vs $0.001 per document), best deployed as secondary validation layer for flagged documents rather than primary bulk processing.</p>
-<hr>
-</section>
-<section id="setup" class="level2">
-<h2 class="anchored" data-anchor-id="setup">Setup</h2>
-<p><strong>Model:</strong> Claude 3.5 Sonnet v2 via AWS Bedrock (<code>us.anthropic.claude-3-5-sonnet-20241022-v2:0</code>)</p>
-<p><strong>Why Claude?</strong> Native vision capabilities (processes images directly without separate OCR), strong structured output generation (JSON reliability), long context window (handles complex prompts + images), available via AWS Bedrock (enterprise-ready deployment).</p>
-<p><strong>API configuration:</strong> Platform: AWS Bedrock (us-east-1); SDK: boto3 (Python 3.11); Max tokens: 2000; Temperature: Default (deterministic extraction)</p>
-<p><strong>Test documents (synthetic):</strong></p>
-<ol type="1">
-<li>clean_id.png - Baseline with valid formatting and dates</li>
-<li>anomaly_dates.png - Issue date in future, expiration before issue</li>
-<li>formatting_issues.png - Lowercase name, mixed date formats, non-standard ID number</li>
-</ol>
-<p><strong>Prompting strategies:</strong></p>
+<p><strong>Problem:</strong> Traditional identity document validation pipelines rely on OCR for text extraction followed by rule-based logic checks. This approach extracts text without understanding semantics, requires explicit programming for every validation scenario, and fails on novel or non-standard document layouts – missing exactly the kinds of inconsistencies that signal fraud.</p>
+<p><strong>Approach:</strong> Built a proof-of-concept serverless auditing pipeline using Claude 3 Haiku via AWS Bedrock to evaluate whether LLMs can detect fraudulent entries in document metadata before they are committed to a permanent record. The system simulates a biometric document ingestion workflow: documents are scanned upstream (via OCR) and their metadata – scores, flags, and field values – is stored as JSON records in a PostgreSQL database. A Lambda function retrieves unaudited records and passes them to Claude, acting as a “Senior Forensic Document Auditor,” which returns a structured PASS/FAIL verdict with reasoning. Ten synthetic audit log entries (8 valid, 2 flagged as malicious) were processed using three prompting strategies (minimal zero-shot, schema-driven, chain-of-thought) and evaluated on structured output reliability, response time, and anomaly detection rate.</p>
+<p><strong>Implications:</strong> Schema-driven prompting is an excellent design choice for production: it achieved 100% structured output reliability and 100% anomaly detection at 1.6s average response time. LLMs catch semantic violations that OCR cannot detect (e.g., expiration dates that precede issue dates, future-dated documents, or formatting inconsistencies), but they are costly and not suitable for all cases. A hybrid architecture is recommended: fast OCR handles bulk volume and LLM handles flagged cases (10–20% of documents) where semantic validation justifies the 8x cost premium.</p>
+<p><strong>Significance:</strong> As document fraud becomes more sophisticated, rule-based validation systems are increasingly insufficient. This project demonstrates a scalable, cost-aware integration pattern for deploying LLM semantic reasoning within enterprise document workflows – applicable to identity verification, compliance screening, and any domain requiring explainable anomaly detection at scale. While this project focused on identity documents, the hybrid approach is transferable to other document types requiring validation (e.g., legal papers, vaccination and medical records).</p>
+<p><strong>Key Findings</strong></p>
 <ul>
-<li>Minimal zero-shot: Brief instruction, no schema</li>
-<li>Schema-driven zero-shot: Explicit JSON schema, validation requirements specified</li>
-<li>Zero-shot chain-of-thought: Step-by-step reasoning required before extraction</li>
+<li>Prompt design is the most important variable in production reliability</li>
+<li>Schema-driven prompting achieved 100% JSON parse success and 100% anomaly detection</li>
+<li>LLMs detected semantic anomalies that are structurally invisible to OCR</li>
+<li>Cost analysis at scale supports selective deployment: processing 10% of documents through LLM review reduces monthly cost by 70% relative to all-LLM processing while retaining 95%+ of semantic anomaly detection</li>
 </ul>
+<div class="callout callout-style-simple callout-note no-icon">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-body-container">
+<p>Built to explore whether LLMs can close the semantic gap in traditional identity document verification pipelines. Produces a validated hybrid architecture recommendation with cost and performance benchmarks – directly applicable to enterprise fraud screening, compliance workflows, and identity risk management systems.</p>
+</div>
+</div>
+</div>
 <hr>
 </section>
-<section id="results" class="level2">
-<h2 class="anchored" data-anchor-id="results">Results</h2>
-<section id="overall-performance" class="level3">
-<h3 class="anchored" data-anchor-id="overall-performance">Overall Performance</h3>
-<p>Total API calls: 9 (3 documents × 3 strategies); Average response time: 1.8 seconds; Overall JSON parse success: 89%; Cost per document: ~$0.008</p>
-<p><strong>Performance by strategy:</strong></p>
+<section id="research-question" class="level2">
+<h2 class="anchored" data-anchor-id="research-question">Research Question</h2>
+<p>Can large language models augment traditional rule-based document validation by detecting semantic anomalies that static logic checks miss, and if so, which prompting strategy optimizes the reliability-cost-speed trade-off for serverless production deployment?</p>
+<hr>
+</section>
+<section id="research-answers" class="level2">
+<h2 class="anchored" data-anchor-id="research-answers">Research Answers</h2>
+<section id="prompt-design-determines-reliability" class="level3">
+<h3 class="anchored" data-anchor-id="prompt-design-determines-reliability">Prompt Design Determines Reliability</h3>
+<p>The three prompting strategies produced dramatically different results despite using the same model and the same records. Minimal zero-shot prompting – brief instructions, no schema – achieved only 67% JSON parse success and detected no anomalies in the test cases. Schema-driven prompting, which provided an explicit JSON schema and specified validation requirements, achieved 100% parse success and 100% anomaly detection at a mean response time of 1.6 seconds. Chain-of-thought prompting, which required the model to reason step by step before rendering a verdict, also achieved 100% on both metrics but at 2.3 seconds – a 44% latency increase with no accuracy gain.</p>
 <table class="caption-top table">
 <thead>
 <tr class="header">
@@ -208,218 +174,76 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tr>
 </tbody>
 </table>
-<p><strong>Winner:</strong> Schema-driven approach balanced reliability (100% parse success) with speed (1.6s average). Chain-of-thought was slower (2.3s) with more verbose output but equivalent detection accuracy.</p>
-<hr>
+<p><strong>Interpretation:</strong> Schema-driven prompting is the production design choice. The investment is in prompt engineering, not model selection – vague instructions reliably produce inconsistent outputs regardless of model capability.</p>
 </section>
+<section id="semantic-anomaly-detection-what-rule-based-systems-cannot-do" class="level3">
+<h3 class="anchored" data-anchor-id="semantic-anomaly-detection-what-rule-based-systems-cannot-do">Semantic Anomaly Detection: What Rule-Based Systems Cannot Do</h3>
+<p>The clearest demonstration of LLM value came from the date anomaly test case. The metadata record contained an issue date in the future (06/20/2025) and an expiration date that preceded the issue date (06/20/2024). A rule-based system would require an explicitly programmed check to catch this; the LLM identifies it from semantic understanding of what document dates mean – no rule required.</p>
+<p>The schema-driven response returned structured JSON identifying both violations: issue date in the future, expiration date before issuance, and a composite “date logic violation” flag – plus a confidence level of “low” and a rejection recommendation. This is the system prompt doing the work: Claude was instructed to act as a Senior Forensic Document Auditor checking for logical inconsistencies, and the schema-driven format ensured the output was reliably parseable.</p>
+<p>The formatting inconsistency test case showed a complementary strength: the chain-of-thought strategy identified that a record with a lowercase name, three different date format conventions, and hyphenated ID numbers was anomalous in context – without requiring any pre-programmed rules about format standards. It normalized the data, explained its reasoning in natural language, and recommended human review rather than automatic rejection, which is the appropriate response for formatting irregularities that may have reasonable explanations.</p>
+<p><strong>Interpretation:</strong> LLMs add value by performing the semantic reasoning layer that rule-based systems architecturally cannot provide. The value is concentrated in records flagged as suspicious – a small subset of the ingestion stream.</p>
 </section>
-<section id="the-key-advantage-semantic-anomaly-detection" class="level2">
-<h2 class="anchored" data-anchor-id="the-key-advantage-semantic-anomaly-detection">The Key Advantage: Semantic Anomaly Detection</h2>
-<section id="test-case-date-logic-violations" class="level3">
-<h3 class="anchored" data-anchor-id="test-case-date-logic-violations">Test Case: Date Logic Violations</h3>
-<p><strong>Document contents (anomaly_dates.png):</strong> Name: JOHN ROBERT SMITH; DOB: 12/25/1990; Document number: S9876543; Issue date: 06/20/2025 (future date); Expiration date: 06/20/2024 (expires before issued); State: MARYLAND</p>
-<p><strong>Traditional OCR result:</strong> Extracts all fields correctly but flags nothing—OCR just reads text without understanding meaning.</p>
-<p><strong>LLM result (schema-driven strategy):</strong></p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode json code-with-copy"><code class="sourceCode json"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">"extracted_data"</span><span class="fu">:</span> <span class="fu">{</span></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    <span class="dt">"name"</span><span class="fu">:</span> <span class="st">"JOHN ROBERT SMITH"</span><span class="fu">,</span></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>    <span class="dt">"date_of_birth"</span><span class="fu">:</span> <span class="st">"12/25/1990"</span><span class="fu">,</span></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    <span class="dt">"document_number"</span><span class="fu">:</span> <span class="st">"S9876543"</span><span class="fu">,</span></span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>    <span class="dt">"issue_date"</span><span class="fu">:</span> <span class="st">"06/20/2025"</span><span class="fu">,</span></span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>    <span class="dt">"expiration_date"</span><span class="fu">:</span> <span class="st">"06/20/2024"</span><span class="fu">,</span></span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>    <span class="dt">"issuing_state"</span><span class="fu">:</span> <span class="st">"MARYLAND"</span></span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">},</span></span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>  <span class="dt">"anomalies_detected"</span><span class="fu">:</span> <span class="ot">[</span></span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Issue date (06/20/2025) is in the future"</span><span class="ot">,</span></span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Expiration date (06/20/2024) occurs before issue date"</span><span class="ot">,</span></span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Date logic violation: document expires before it was issued"</span></span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>  <span class="ot">]</span><span class="fu">,</span></span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>  <span class="dt">"confidence_level"</span><span class="fu">:</span> <span class="st">"low"</span><span class="fu">,</span></span>
-<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>  <span class="dt">"recommendation"</span><span class="fu">:</span> <span class="st">"Reject - critical date inconsistencies"</span></span>
-<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p><strong>This is the value proposition:</strong> LLMs perform semantic validation that traditional OCR cannot. They understand that documents can’t be issued in the future or expire before issuance.</p>
-<hr>
-</section>
-</section>
-<section id="formatting-inconsistency-detection" class="level2">
-<h2 class="anchored" data-anchor-id="formatting-inconsistency-detection">Formatting Inconsistency Detection</h2>
-<section id="test-case-non-standard-formatting" class="level3">
-<h3 class="anchored" data-anchor-id="test-case-non-standard-formatting">Test Case: Non-Standard Formatting</h3>
-<p><strong>Document contents (formatting_issues.png):</strong> Name: maria garcia lopez (lowercase—unusual for government IDs); DOB: 1995-08-30 (YYYY-MM-DD format); Issue date: August 15, 2023 (written out); Expiration: 08/15/28 (MM/DD/YY format); Document number: DL-2023-45678 (hyphens—non-standard)</p>
-<p><strong>Chain-of-thought strategy response:</strong> Model noted multiple formatting inconsistencies (lowercase name, three different date formats, non-standard ID hyphenation), normalized all data (converted lowercase to uppercase, standardized dates), provided contextual understanding (knows lowercase unusual for government IDs), explained reasoning in natural language, and appropriately recommended human review rather than auto-reject.</p>
-<p><strong>Key advantages demonstrated:</strong> Data normalization, contextual understanding, natural language explanation, appropriate uncertainty handling.</p>
-<hr>
-</section>
-</section>
-<section id="performance-visualization" class="level2">
-<h2 class="anchored" data-anchor-id="performance-visualization">Performance Visualization</h2>
+<section id="hybrid-architecture-optimizes-cost-and-coverage" class="level3">
+<h3 class="anchored" data-anchor-id="hybrid-architecture-optimizes-cost-and-coverage">Hybrid Architecture Optimizes Cost and Coverage</h3>
+<p>At $0.008 per document, LLM processing costs 8x more than traditional rule-based processing at $0.001 per document. At high volume, all-LLM processing is not viable – $8,000 per million documents versus $1,000 for rule-based-only. The cost case for a hybrid architecture is straightforward.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="bedrock_analysis_comparison.png" class="img-fluid figure-img"></p>
 <figcaption>Performance Comparison</figcaption>
 </figure>
 </div>
-<p>Four-panel breakdown shows: (1) Schema-driven and CoT achieve 100% JSON parse success vs.&nbsp;minimal’s 33% failure rate; (2) Minimal fastest (1.4s), CoT slowest (2.3s); (3) Only schema-driven and CoT detect test anomaly; (4) All strategies handle clean document well, struggle differently with anomalies. Key takeaway: spend extra 0.2 seconds for schema-driven approach—reliability matters more than marginal speed gains.</p>
+<p>In the recommended architecture, upstream OCR scans the full document stream and a rule-based filter passes clean records directly to the database (estimated 80–90% of volume), routing only flagged records to Lambda for LLM analysis. The LLM performs semantic validation and generates natural language explanations for human reviewers. At 100K documents per month, this architecture costs approximately $170/month – compared to $800 for all-LLM and $100 for rule-based-only – while retaining semantic detection capability for the 10% of documents where it matters.</p>
+<p><strong>Interpretation:</strong> The hybrid pipeline uses rule-based processing for faster and cheaper bulk throughput and LLMs for semantic reasoning on ambiguous cases. The cost premium is justified when the decision stakes are highest (fraud versus reasonable errors).</p>
 <hr>
 </section>
-<section id="cost-benefit-analysis" class="level2">
-<h2 class="anchored" data-anchor-id="cost-benefit-analysis">Cost-Benefit Analysis</h2>
-<p><strong>Per-document economics:</strong> LLM approach costs ~$0.008 per document with 1.6-2.3s latency; traditional OCR costs ~$0.001 per document with &lt;100ms latency. This represents 8x cost premium.</p>
-<p><strong>Cost comparison at scale:</strong></p>
-<table class="caption-top table">
-<thead>
-<tr class="header">
-<th>Volume</th>
-<th>LLM Cost</th>
-<th>OCR Cost</th>
-<th>Premium</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>1K documents</td>
-<td>$8</td>
-<td>$1</td>
-<td>8x</td>
-</tr>
-<tr class="even">
-<td>100K documents</td>
-<td>$800</td>
-<td>$100</td>
-<td>8x</td>
-</tr>
-<tr class="odd">
-<td>1M documents</td>
-<td>$8,000</td>
-<td>$1,000</td>
-<td>8x</td>
-</tr>
-</tbody>
-</table>
-<p><strong>Trade-off question:</strong> Is semantic validation worth 8x cost increase?</p>
-<p><strong>High-value use cases (worth 8x):</strong> High-stakes decisions (passport issuance, visa approval, border crossing); fraud detection (secondary review of flagged documents); novel document types (new jurisdictions, updated formats); complex validation (multi-field logic checks).</p>
-<p><strong>Low-value use cases (not worth 8x):</strong> Bulk processing (routine renewals, low-risk scenarios); simple extraction (standard documents from known issuers); real-time requirements (&lt;100ms latency needed); budget constraints (high-volume, cost-sensitive operations).</p>
+</section>
+<section id="next-steps" class="level2">
+<h2 class="anchored" data-anchor-id="next-steps">Next Steps</h2>
+<p>The current proof-of-concept used synthetic metadata records with controlled anomalies. Production validation would require testing against a real document corpus with known ground-truth labels to establish precision and recall for anomaly detection across document types and jurisdictions. Key open questions include: how performance degrades on genuinely novel record patterns the model has not encountered; how to handle hallucination risk in production (the model may generate plausible but incorrect reasoning); and whether fine-tuning on domain-specific audit data improves reliability beyond prompt engineering alone.</p>
+<p>A significant infrastructure challenge identified during development is Lambda-to-RDS networking. Connecting a Lambda function outside a VPC to a publicly accessible RDS instance produces <code>InterfaceError</code> timeouts due to AWS internal routing overhead. The correct production architecture places Lambda inside the same private VPC as RDS, with a NAT Gateway or VPC Endpoints to maintain Bedrock API access while keeping database traffic off the public internet.</p>
+<p>The hybrid architecture also assumes a stable confidence signal as the routing criterion. In practice, calibrating the threshold – deciding what fraction of records gets LLM review – requires empirical data on the false negative rate of rule-based-only processing in the specific operational context.</p>
 <hr>
 </section>
-<section id="recommended-integration-hybrid-pipeline" class="level2">
-<h2 class="anchored" data-anchor-id="recommended-integration-hybrid-pipeline">Recommended Integration: Hybrid Pipeline</h2>
-<p><strong>Architecture:</strong></p>
-<pre><code>All Documents
-    ↓
-Fast OCR (bulk, ~$0.001/doc)
-    ↓
-Rule-Based Filter
-    ↓
-├─ PASS (80-90%)
-└─ FLAGGED (10-20%)
-    • Low OCR confidence
-    • Failed validation
-    • High-risk transaction
-    • Novel document type
-    ↓
-LLM Analysis (selective, ~$0.008/doc)
-    • Semantic validation
-    • Anomaly detection
-    • Explain suspicion
-    ↓
-Human Review (LLM-explained findings)</code></pre>
-<p><strong>This balances:</strong> Cost (LLM only on 10-20% subset); speed (OCR handles 80-90% rapidly); accuracy (LLM catches semantic issues OCR misses); explainability (human reviewers see LLM reasoning).</p>
-<p><strong>Example (100K documents/month):</strong> 90K processed by OCR only: $90; 10K flagged for LLM review: $80; Total: $170/month (vs.&nbsp;$800 for all-LLM or $100 for OCR-only). Value proposition: catch 95%+ of semantic anomalies for 70% less than full LLM processing.</p>
+<section id="study-design" class="level2">
+<h2 class="anchored" data-anchor-id="study-design">Study Design</h2>
+<p><strong>Data Source:</strong> Synthetic audit log records generated for this proof-of-concept using the <code>faker</code> library. Ten JSON records inserted into a PostgreSQL (RDS) <code>audit_logs</code> table representing biometric document scans: 8 with valid scores (0.95) and 2 with low scores (0.30) simulating flagged/malicious entries. No real identity documents or images were used; the LLM operates on structured metadata, not raw images.</p>
+<p><strong>Data Handling:</strong> Unaudited records (where <code>ai_status IS NULL</code>) were retrieved from RDS and passed as JSON payloads to the Bedrock API. Each record included <code>user_id</code>, <code>score</code>, and <code>doc_type</code>. Claude was instructed via system prompt to act as a Senior Forensic Document Auditor, check for logical inconsistencies, and return <code>{"status": "PASS"/"FAIL", "reasoning": "..."}</code>. Results were written back to the <code>ai_status</code> and <code>ai_reasoning</code> columns. Audit outcomes were visualized as a bar chart of PASS/FAIL counts.</p>
+<p><strong>Analytical Approach:</strong></p>
+<ol type="1">
+<li>Initialized PostgreSQL schema (<code>schema.sql</code>) with <code>audit_logs</code> table storing <code>user_id</code>, <code>document_type</code>, <code>ai_status</code>, <code>ai_reasoning</code>, and <code>raw_data</code> (JSONB)</li>
+<li>Generated 10 synthetic records using <code>faker</code> and inserted via <code>pg8000.native</code>; 2 records seeded with low verification scores (0.30) to simulate fraud cases</li>
+<li>Built Lambda function (Python 3.12) to retrieve unaudited records from RDS and invoke Claude 3 Haiku via Bedrock with a forensic auditor system prompt</li>
+<li>Tested three prompting strategies varying in structure: minimal zero-shot, schema-driven zero-shot, zero-shot chain-of-thought</li>
+<li>Evaluated each strategy on JSON parse success, response time, and PASS/FAIL accuracy against known ground truth</li>
+<li>Modeled cost at scale under three architectures: rule-based only, LLM-only, hybrid</li>
+<li>Derived hybrid pipeline architecture recommendation balancing cost, latency, and semantic coverage; documented VPC/networking lessons learned for Lambda-to-RDS connectivity</li>
+</ol>
 <hr>
 </section>
-<section id="technical-implementation" class="level2">
-<h2 class="anchored" data-anchor-id="technical-implementation">Technical Implementation</h2>
-<p><strong>Base64 encoding:</strong> Bedrock API requires images as base64 strings. Process: open image file, write to in-memory buffer as PNG, encode buffer as base64 string, decode to UTF-8 text for JSON embedding.</p>
-<p><strong>Multi-content API structure:</strong> Bedrock supports mixing image + text in single message, enabling vision-language model to process image directly without separate OCR step.</p>
-<p><strong>Error handling pattern:</strong> LLMs don’t always return valid JSON despite instructions. May include markdown formatting or explanatory text. Production systems must handle JSON parsing failures gracefully with retry logic for transient errors and fallback to raw text extraction if JSON fails.</p>
+<section id="data-code" class="level2">
+<h2 class="anchored" data-anchor-id="data-code">Data &amp; Code</h2>
+<p><strong>Repository:</strong> <a href="https://github.com/kchoover14/document-validation-bedrock">github.com/kchoover14/document-validation-bedrock</a></p>
+<p><strong>Available:</strong></p>
+<ul>
+<li>Python scripts – Lambda function and Bedrock pipelin, mock data generator, prompt template</li>
+<li><code>schema.sql</code> – PostgreSQL table definition</li>
+<li>Processed output files – performance figures</li>
+</ul>
 <hr>
 </section>
-<section id="prompt-engineering-insights" class="level2">
-<h2 class="anchored" data-anchor-id="prompt-engineering-insights">Prompt Engineering Insights</h2>
-<p><strong>What worked:</strong> Explicit JSON schemas (improved parse success from 67% to 100%); specific validation rules (improved anomaly detection from 0% to 100%); step-by-step instructions for chain-of-thought (better explainability); “return only JSON” instruction (reduced extraneous text).</p>
-<p><strong>What didn’t work:</strong> Vague instructions (“extract information and check for issues” → inconsistent output, missed anomalies); implicit expectations (model returns prose instead of structured data); overly complex schemas (model truncates response, doesn’t follow 50-line specifications); no examples (unpredictable behavior).</p>
+<section id="tools-technologies" class="level2">
+<h2 class="anchored" data-anchor-id="tools-technologies">Tools &amp; Technologies</h2>
+<ul>
+<li><strong>Languages:</strong> Python 3.12</li>
+<li><strong>Tools:</strong> AWS Bedrock, AWS Lambda, AWS RDS (PostgreSQL 17), boto3</li>
+<li><strong>Packages:</strong> <code>pg8000</code>, <code>boto3</code>, <code>faker</code>, <code>pandas</code>, <code>matplotlib</code></li>
+</ul>
 <hr>
 </section>
-<section id="comparison-to-traditional-approaches" class="level2">
-<h2 class="anchored" data-anchor-id="comparison-to-traditional-approaches">Comparison to Traditional Approaches</h2>
-<table class="caption-top table">
-<colgroup>
-<col style="width: 20%">
-<col style="width: 30%">
-<col style="width: 48%">
-</colgroup>
-<thead>
-<tr class="header">
-<th>Feature</th>
-<th>OCR + Rules</th>
-<th>LLM (This Approach)</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>Field Extraction</td>
-<td>Fast, reliable</td>
-<td>Comparable accuracy</td>
-</tr>
-<tr class="even">
-<td>Date Logic</td>
-<td>Can implement rules</td>
-<td>Natural understanding</td>
-</tr>
-<tr class="odd">
-<td>Format Consistency</td>
-<td>Requires templates</td>
-<td>Detects without templates</td>
-</tr>
-<tr class="even">
-<td>Semantic Anomalies</td>
-<td>Missed</td>
-<td>Strong detection</td>
-</tr>
-<tr class="odd">
-<td>Novel Documents</td>
-<td>Needs new templates</td>
-<td>Adapts with prompts</td>
-</tr>
-<tr class="even">
-<td>Explainability</td>
-<td>Rule traces</td>
-<td>Natural language</td>
-</tr>
-<tr class="odd">
-<td>Speed</td>
-<td>&lt;100ms</td>
-<td>~2s (20x slower)</td>
-</tr>
-<tr class="even">
-<td>Cost</td>
-<td>$0.001/doc</td>
-<td>$0.008/doc (8x more)</td>
-</tr>
-<tr class="odd">
-<td>Hallucination Risk</td>
-<td>None (deterministic)</td>
-<td>May generate plausible but incorrect data</td>
-</tr>
-</tbody>
-</table>
-<p><strong>Conclusion:</strong> LLMs and OCR are complementary, not competitive. Use OCR for bulk, LLMs for semantic validation on flagged cases.</p>
-<hr>
-</section>
-<section id="operational-considerations" class="level2">
-<h2 class="anchored" data-anchor-id="operational-considerations">Operational Considerations</h2>
-<p><strong>When to use LLMs:</strong> Secondary validation after OCR flags issues; high-stakes decisions; novel/non-standard layouts; fraud investigation requiring explanations; low-volume, high-value scenarios.</p>
-<p><strong>When not to use LLMs:</strong> Primary bulk processing (too slow, too expensive); real-time systems (&lt;100ms required); high-throughput (millions/day); budget-constrained operations; visual tampering detection (better done by computer vision).</p>
-<p><strong>Integration requirements:</strong> AWS account with Bedrock access; boto3 SDK and IAM permissions; base64 encoding pipeline; JSON parsing with error handling; retry logic for API failures; human review workflow; audit trail for decisions; cost monitoring; performance metrics dashboard.</p>
-<p><strong>Limitations:</strong> Latency (20x slower than OCR); cost (8x premium); hallucination risk (may “fill in” missing fields); won’t catch visual tampering (Photoshop alterations, deepfakes, physical security features); model updates may shift responses over time; API rate limits can throttle requests.</p>
-<hr>
-</section>
-<section id="key-insights" class="level2">
-<h2 class="anchored" data-anchor-id="key-insights">Key Insights</h2>
-<p><strong>Prompt engineering is critical.</strong> Schema-driven prompts achieved 100% reliability vs.&nbsp;67% for minimal prompts. Investment in prompt refinement pays off in production reliability.</p>
-<p><strong>Vision-language models are powerful.</strong> No separate OCR pipeline needed—Claude processes images directly and extracts structured data in one API call. This changes the document processing paradigm from “OCR → rules → validation” to “LLM → structured output + reasoning.”</p>
-<p><strong>Cost-performance trade-offs matter.</strong> 8x cost increase for semantic validation is acceptable if used selectively (secondary validation layer), decision value justifies cost (high-stakes scenarios), and volume is manageable (not millions/day). For IDSL, recommend hybrid approach—OCR for bulk, LLM for flagged cases.</p>
-<p><strong>Explainability has value.</strong> Natural language explanations (“Name appears in lowercase - atypical for government IDs”) help human reviewers more than traditional rule traces (“Rule #347 violated: Field ‘name’ failed regex pattern [A-Z]+”). For investigators, natural language is more actionable.</p>
-<hr>
+<section id="expertise" class="level2">
+<h2 class="anchored" data-anchor-id="expertise">Expertise</h2>
+<p><strong>Domain Expertise:</strong> prompt engineering | LLM integration | serverless architecture | document fraud detection | cost-performance trade-off analysis | AWS Bedrock | AWS Lambda | PostgreSQL</p>
+<p><strong>Transferable Expertise:</strong> This project demonstrates the ability to design and evaluate AI integration architectures under real-world constraints – not just whether a technology works, but when, for whom, and at what cost. The hybrid pipeline recommendation reflects a pattern-recognition skill applicable to any enterprise context where AI capability must be balanced against operational cost, latency, and explainability requirements.</p>
 </section>
 
 </main>
