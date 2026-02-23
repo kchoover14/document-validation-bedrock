@@ -4,7 +4,7 @@ This project implements a serverless AI auditing pipeline that uses Claude 3 Hai
 
 ## Portfolio Page
 
-The [kchoover14.github.io/document-validation-bedrock](portfolio page) includes a full project narrative, key findings, and figures. 
+The [portfolio page](kchoover14.github.io/document-validation-bedrock) includes a full project narrative, key findings, and figures. 
 
 ## Tools & Technololgies
 
