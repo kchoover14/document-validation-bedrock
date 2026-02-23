@@ -15,12 +15,3 @@ The [portfolio page](https://kchoover14.github.io/document-validation-bedrock/) 
 ## Expertise
 
 Designing and evaluating AI integration architectures under real-world constraints -- not just whether a technology works, but when, for whom, and at what cost.
-
-## How to Run
-
-1. Run `schema.sql` to initialize the `audit_logs` table in PostgreSQL
-2. Run the mock generator script to create test records (8 valid, 2 flagged)
-3. Trigger the Lambda function to process unaudited records and write results back to RDS
-4. View audit outcomes in the `audit_logs` table or via the performance visualization script
-
-> **Note on Lambda-to-RDS networking:** Connecting Lambda outside a VPC to a publicly accessible RDS instance will produce `InterfaceError` timeouts. For production, place Lambda inside the same private VPC as RDS and use a NAT Gateway or VPC Endpoints to maintain Bedrock API access.
