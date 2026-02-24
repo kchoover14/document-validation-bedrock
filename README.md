@@ -12,6 +12,10 @@ The [portfolio page](https://kchoover14.github.io/document-validation-bedrock/) 
 **Tools:** AWS Bedrock | AWS Lambda | AWS RDS (PostgreSQL 17)
 **Packages:** pg8000 | boto3 | faker | pandas | matplotlib
 
+## Environment
+
+`requirements.txt` -- pinned Python package versions. Install with `pip install -r requirements.txt`.
+
 ## Expertise
 
 Designing and evaluating AI integration architectures under real-world constraints -- not just whether a technology works, but when, for whom, and at what cost.
