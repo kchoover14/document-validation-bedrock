@@ -61,7 +61,7 @@ ul.task-list li input[type="checkbox"] {
   </ul></li>
   <li><a href="#next-steps" id="toc-next-steps" class="nav-link" data-scroll-target="#next-steps">Next Steps</a></li>
   <li><a href="#study-design" id="toc-study-design" class="nav-link" data-scroll-target="#study-design">Study Design</a></li>
-  <li><a href="#data-code" id="toc-data-code" class="nav-link" data-scroll-target="#data-code">Data &amp; Code</a></li>
+  <li><a href="#project-resources" id="toc-project-resources" class="nav-link" data-scroll-target="#project-resources">Project Resources</a></li>
   <li><a href="#tools-technologies" id="toc-tools-technologies" class="nav-link" data-scroll-target="#tools-technologies">Tools &amp; Technologies</a></li>
   <li><a href="#expertise" id="toc-expertise" class="nav-link" data-scroll-target="#expertise">Expertise</a></li>
   </ul>
@@ -186,12 +186,8 @@ ul.task-list li input[type="checkbox"] {
 <section id="hybrid-architecture-optimizes-cost-and-coverage" class="level3">
 <h3 class="anchored" data-anchor-id="hybrid-architecture-optimizes-cost-and-coverage">Hybrid Architecture Optimizes Cost and Coverage</h3>
 <p>At $0.008 per document, LLM processing costs 8x more than traditional rule-based processing at $0.001 per document. At high volume, all-LLM processing is not viable – $8,000 per million documents versus $1,000 for rule-based-only. The cost case for a hybrid architecture is straightforward.</p>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="bedrock_analysis_comparison.png" class="img-fluid figure-img"></p>
-<figcaption>Performance Comparison</figcaption>
-</figure>
-</div>
+<p><strong>Figure 1. Prompt strategy performance comparison: JSON parse success, average response time, and anomaly detection rate across minimal, schema-driven, and chain-of-thought approaches.</strong></p>
+<p><img src="bedrock_analysis_comparison.png" class="img-fluid"></p>
 <p>In the recommended architecture, upstream OCR scans the full document stream and a rule-based filter passes clean records directly to the database (estimated 80–90% of volume), routing only flagged records to Lambda for LLM analysis. The LLM performs semantic validation and generates natural language explanations for human reviewers. At 100K documents per month, this architecture costs approximately $170/month – compared to $800 for all-LLM and $100 for rule-based-only – while retaining semantic detection capability for the 10% of documents where it matters.</p>
 <p><strong>Interpretation:</strong> The hybrid pipeline uses rule-based processing for faster and cheaper bulk throughput and LLMs for semantic reasoning on ambiguous cases. The cost premium is justified when the decision stakes are highest (fraud versus reasonable errors).</p>
 <hr>
@@ -220,23 +216,34 @@ ul.task-list li input[type="checkbox"] {
 </ol>
 <hr>
 </section>
-<section id="data-code" class="level2">
-<h2 class="anchored" data-anchor-id="data-code">Data &amp; Code</h2>
+<section id="project-resources" class="level2">
+<h2 class="anchored" data-anchor-id="project-resources">Project Resources</h2>
 <p><strong>Repository:</strong> <a href="https://github.com/kchoover14/document-validation-bedrock">github.com/kchoover14/document-validation-bedrock</a></p>
-<p><strong>Available:</strong></p>
+<p><strong>Data:</strong> Synthetic audit log records generated via the <code>faker</code> library – no real identity documents used. No external data source.</p>
+<p><strong>Code:</strong></p>
 <ul>
-<li>Python scripts – Lambda function and Bedrock pipelin, mock data generator, prompt template</li>
-<li><code>schema.sql</code> – PostgreSQL table definition</li>
-<li>Processed output files – performance figures</li>
+<li><code>prompt engineering via lambda.ipynb</code> – main pipeline: RDS connection, mock data generation, Bedrock invocation, audit results, visualization</li>
+<li><code>mockDatabase.ipynb</code> – standalone mock data generator showing synthetic record construction</li>
+<li><code>schema.sql</code> – PostgreSQL table definition for <code>audit_logs</code></li>
+<li><code>system_prompt.txt</code> – forensic auditor system prompt used with Claude 3 Haiku</li>
+</ul>
+<p><strong>Project Artifacts:</strong></p>
+<ul>
+<li>Figures (n=1)</li>
+</ul>
+<p><strong>License:</strong></p>
+<ul>
+<li>Code and scripts © Kara C. Hoover, licensed under the <a href="LICENSE">MIT License</a>.</li>
+<li>Data, figures, and written content © Kara C. Hoover, licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a>.</li>
 </ul>
 <hr>
 </section>
 <section id="tools-technologies" class="level2">
 <h2 class="anchored" data-anchor-id="tools-technologies">Tools &amp; Technologies</h2>
 <ul>
-<li><strong>Languages:</strong> Python 3.12</li>
-<li><strong>Tools:</strong> AWS Bedrock, AWS Lambda, AWS RDS (PostgreSQL 17), boto3</li>
-<li><strong>Packages:</strong> <code>pg8000</code>, <code>boto3</code>, <code>faker</code>, <code>pandas</code>, <code>matplotlib</code></li>
+<li><p><strong>Languages:</strong> Python 3.12</p></li>
+<li><p><strong>Tools:</strong> AWS Bedrock | AWS Lambda | AWS RDS (PostgreSQL 17)</p></li>
+<li><p><strong>Packages:</strong> pg8000 | boto3 | faker | pandas | matplotlib</p></li>
 </ul>
 <hr>
 </section>

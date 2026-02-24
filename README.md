@@ -6,11 +6,11 @@ This project implements a serverless AI auditing pipeline that uses Claude 3 Hai
 
 The [portfolio page](https://kchoover14.github.io/document-validation-bedrock/) includes a full project narrative, key findings, and figures. 
 
-## Tools & Technololgies
+## Tools & Technologies
 
-- **Languages:** Python 3.12
-- **Cloud:** AWS Lambda, AWS Bedrock (Claude 3 Haiku), Amazon RDS (PostgreSQL 17)
-- **Packages:** `pg8000`, `boto3`, `faker`, `pandas`, `matplotlib`
+**Languages:** Python 3.12
+**Tools:** AWS Bedrock | AWS Lambda | AWS RDS (PostgreSQL 17)
+**Packages:** pg8000 | boto3 | faker | pandas | matplotlib
 
 ## Expertise
 
@@ -18,5 +18,5 @@ Designing and evaluating AI integration architectures under real-world constrain
 
 ## License
 
-- Code and scripts are licensed under the [MIT License](LICENSE).
-- Data, figures, and written content �© Kara C. Hoover, licensed under [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/).
+- Code and scripts © Kara C. Hoover, licensed under the [MIT License](LICENSE).
+- Data, figures, and written content © Kara C. Hoover, licensed under [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/).
